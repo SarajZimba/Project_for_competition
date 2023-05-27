@@ -1,0 +1,68 @@
+{% load static %}
+{% static "images" as baseUrl %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STROLL</title>
+
+    <script src="https://kit.fontawesome.com/825b56df51.js" crossorigin="anonymous"></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/stroll-media.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
+</head>
+{% include 'nav.html' %}
+
+{% block content%}
+
+
+<div class="content3">
+    <br><br><br>
+        <header>
+      <p id="p2"> <b>Wheel Chair Friendly Locations</b><br>Search Results:&nbsp;{{query}}<br>
+        <b></b></p> 
+    </header>
+        <div class="blog">
+            {%for message in messages%}
+                <p style="color:green">{{message}}</p>
+            {% endfor %}
+            {% if blogdatas|length < 1 %}
+            <h2 style="margin: 0 auto;color:white;">No search results Found for <span style="text-decoration: underline;">{{query}}</span><br><span>Check your spelling or try different Keywords</span></h2>
+            <br>
+            <!-- <h5 style="color:white; text-align:center">
+            Check your spelling or try different Keywords
+            </h5> -->
+            {% endif %}
+            {% for blogdata in blogdatas %}
+            <div class="first">
+                <div class="ig">
+                <img class="blog-img" src="{{blogdata.ImageUrl}}" alt="">
+                </div>
+            
+                <br>
+                <p style="text-align: center;">{{blogdata.name}}<br><br>
+                <b>{{blogdata.description}}</b></p>
+                
+                <!-- <div class="cover">
+                    <div class="blog-image"><img style="margin:10px;height: 50px;
+                    width: 50px;
+                    border-radius: 50%;" src="images/245lady.jpg" alt=""></div>
+                    <div class="name">Charlotte Lucy</div>
+                </div> -->
+
+                <br><br>
+                <h4 style="text-align:center">Get Directions</h4>
+                <div style= "display:flex;justify-content:center;padding:10px 0" class="direction"><iframe src="{{blogdata.iframe}}" frameborder="0"></iframe></div>
+            
+            </div>
+            {% endfor %}
+        </div>
+</div>
+{% endblock %}
