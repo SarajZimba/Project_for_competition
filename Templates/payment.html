@@ -1,5 +1,5 @@
+{% extends 'base.html'%}
 {% load static %}
-{% static "images" as baseUrl %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,33 +19,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
 </head>
 
+{%block content%}
 <body>
-    <div class="container1">
-        <div class="title">
-            <h2>Str<i class="fa-solid fa-earth-americas stroll-icon"></i>ll</h2>
-        </div>
-        <div class="menu">
-            <li><a href="{% url 'home'%}">HOME</a></li>
-            <li><a href="#">ABOUT</a></li>
-            <li><a href="{}">DESTINATIONS</a></li>
-            <li>
-                <a href="#">BLOG<i class='bx bx-chevron-down'></i></a>
-                <ul class="dropdown">
-                    <li>BLOG</li>
-                    <li>BLOG SINGLE</li>
-                    <li>LANDING PAGE</li>
-                </ul>
-            </li>
-            <li><a href="#">CONTACT</a></li>
-        </div>
-    </div>  
-    
+   
     <div class="container7 container">
         <h4><span class="st-line"></span>&nbsp;&nbsp; 10-30% Off</h4>
         <h2 class="head2">Book Now</h2>
         <form id="form">
             {% csrf_token %}
-            <div class="form-div">
+            <div aria-label="Form for payment" class="form-div">
                 <div class="form-item">
                     <label for="name">Name</label>
                     <input type="text" id="name" name="name" placeholder="Enter your name">
@@ -90,10 +72,7 @@
                     </select>
                 </div>
 
-                <div class="form-item">
-                    <label for="=date">Date</label>
-                    <input type="date" name="date" id="date" value="mm/dd/yyyy">
-                </div>
+    
 
                 <div  id="form-button">
                     <label for="submit">Submit</label>
@@ -103,7 +82,7 @@
         </form>
             <div class="hidden" id="payment-info">
                 <label for="payment">Continue</label>
-                <button id="payment">Payment</button>
+                <!-- <button id="payment">Payment</button> -->
             </div>
         
     </div>
@@ -112,34 +91,17 @@
 <script type="text/javascript">
     /*csrf token */
     
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                // Does this cookie string begin with the name we want?
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-        
-    }
-    const csrftoken = getCookie('csrftoken');
     
     
 
-    /* form = document.getElementById('form')
+     form = document.getElementById('form')
 
     form.addEventListener('submit' , function(e){
         e.preventDefault()
         console.log("form-submitted")
         document.getElementById('form-button').classList.add('hidden')
         document.getElementById('payment-info').classList.remove('hidden')
-    }) */
+    }) 
 
     form = document.getElementById('form')
 
@@ -152,11 +114,11 @@
     })
 
    
-    document.getElementById('payment').addEventListener('click', function (e){
+    /*document.getElementById('payment').addEventListener('click', function (e){
         submitFormData()
-    })
+    })*/
 
-    function submitFormData(){
+     function submitFormData(){
         console.log('Payment button clicked')
 
         var userFormData ={
@@ -192,5 +154,7 @@
 
 
 
-    }
+    } 
 </script>
+
+{%endblock%}

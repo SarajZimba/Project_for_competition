@@ -1,3 +1,4 @@
+{% extends 'base.html'%}
 {% load static %}
 {% static "images" as baseUrl %}
 <!DOCTYPE html>
@@ -19,11 +20,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
 </head>
 <body>
-    {%block content %}
-    {% include 'nav.html '%}
+   
 
-    {% endblock %}
-
+    {%block content%}
     <div class="container2">
         <div class="about">
             <h4>Wheelie Nepal</h4>
@@ -70,14 +69,14 @@
     <div class="container4" id="container4">
         <div class="container">
             <h4><span class="st-line"></span>&nbsp;&nbsp; Hot Tours</h4>
-            <h2 class="head2">Popular Packages</h2>
+            <h2 class="head2">Popular WheelChair Packages</h2>
             <div class="grid-images">
                 {% for dest in dests %}
-                <div class="g-img">
+                <div class="g-img products">
                     <img src="{{dest.imageUrl}}" alt="">
                     <div class="img-text">
-                        <h3>{{dest.name}}</h3>
-                        <p>{{dest.description}}<a href="{% url 'payment' %}"><span style="color:yellow">${{dest.price}}</span></a></p>
+                        <h3 class="product-name">{{dest.name}}</h3>
+                        <p>{{dest.description}}<a  class="product-price" href="{% url 'payment' %}"><span style="color:yellow">${{dest.price}}</span></a></p>
                     </div>
 
                 </div>
@@ -122,17 +121,17 @@
     <div class="container5">
         <div class="video-container">
             <div class="video">
-                <video src="static/images/video1.mp4" muted></video>
+                <video aria-label="video" src="static/images/video1.mp4" muted></video>
             </div>
 
         </div>
-        <div id="button"><button><i class='bx bx-play playbutton' ></i></button></div>
+        <div id="button"><button aria-label="play-video"><i class='bx bx-play playbutton' ></i></button></div>
            
 
         
 
         <div class="popup-video">
-            <span>&times;</span>
+            <span aria-label="close-video-window-button">&times;</span>
             <video src="static/images/video1.mp4" muted autoplay controls></video>
         </div>
 
@@ -356,27 +355,6 @@
             document.querySelector('.popup-video video').pause()
             document.getElementById('button').style.display ='block';
         }
-
-        function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    // Does this cookie string begin with the name we want?
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-            
-        }
-        const csrftoken = getCookie('csrftoken');
-        
-        
-
         /* form = document.getElementById('form')
 
         form.addEventListener('submit' , function(e){
@@ -438,7 +416,31 @@
 
 
         }
+        let products = document.getElementsByClassName('products');
+        /* let productName = document.getElementById('product-name');
+        let productPrice = document.getElementById('product-price'); */
+
+        function updatepriceannouncement(){
+            for(let i=0;i<products.length;i++){
+                let product = products[i];
+                let productName = product.getElementsByClassName('product-name')[0];
+                let productPrice = product.getElementsByClassName('product-price')[0];
+
+                let name = productName.textContent;
+                let price = productPrice.textContent;
+
+                productName.setAttribute('aria-label', 'Package Name: ' + name)
+                productPrice.setAttribute('aria-label', 'Package Pricefor' + name + price)
+    
+            }
+
+
+           
+        }
+
+        updatepriceannouncement();
     </script>
+
+    {%endblock %}
 </body>
 </html>
-

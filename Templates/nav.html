@@ -1,9 +1,11 @@
 <div class="container1">
     <div class="title">
-        <h2><i class="fa-solid fa-wheelchair-move stroll-icon"></i>heelie</h2>
+        <h2 aria-label="Wheelie logo ."><i class="fa-solid fa-wheelchair-move stroll-icon"></i>heelie</h2>
+        <span>Hello, {{request.user}}</span>
+        <span><a href="{% url 'logout'%}">Logout</a></span>
     </div>
-    <div class="menu">
-      
+    <div aria-label="navigation bar with 4 links home about destinations blog contact" role="nav" class="menu">
+
         <li><a href="{% url 'home' %}">HOME</a></li>
         <li><a href="#">ABOUT</a></li>
         <li><a href="#container4">DESTINATIONS</a></li>
@@ -16,11 +18,12 @@
             </ul>
         </li>
         <li><a href="#">CONTACT</a></li>
+
     </div>
         <div class="form">
-            <form method="get" action="/search">
+            <form aria-label="input text for search"  method="get" action="/search">
             <input type="search" placeholder="search location" name="query" id="query" required>
-            <button class="search" type="submit"><i class="fa-solid fa-magnifying-glass glass"></i></button>
+            <button aria-label = "search-button" class="search" type="submit"><i class="fa-solid fa-magnifying-glass glass"></i></button>
             </form>
         </div>
    
