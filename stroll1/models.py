@@ -2,6 +2,11 @@ from django.db import models
 
 # Create your models here.
 
+
+class Customer(models.Model):
+    name = models.CharField(max_length=100)
+    
+
 class Destination(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=300) 
@@ -22,7 +27,6 @@ class Destination(models.Model):
     
 
 class Custom(models.Model):
-    name = models.CharField(max_length=100,null=True)
     destnation = models.CharField(max_length=100,null=True)
     activity = models.CharField(max_length=100, null=True)
     duration = models.CharField(max_length=100, null=True)
