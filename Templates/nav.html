@@ -1,8 +1,10 @@
 <div class="container1">
     <div class="title">
         <h2 aria-label="Wheelie logo ."><i class="fa-solid fa-wheelchair-move stroll-icon"></i>heelie</h2>
+        {% if request.user.is_authenticated%}
         <span>Hello, {{request.user}}</span>
         <span><a href="{% url 'logout'%}">Logout</a></span>
+        {% endif %}
     </div>
     <div aria-label="navigation bar with 4 links home about destinations blog contact" role="nav" class="menu">
 
