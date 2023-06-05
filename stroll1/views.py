@@ -7,13 +7,19 @@ from django.contrib.auth.forms import UserCreationForm
 
 from django.contrib.auth import authenticate, login, logout
 
-from .forms import CreateUserForm
+from .forms import CreateUserForm,ratingForm
 
 from django.contrib.auth.decorators import login_required
 
-from .decorators import unauthenticated_user
+from .decorators import unauthenticated_user, allowed_users
 
 from django.contrib.auth.models import Group
+
+# from rest_framework.viewsets import ModelViewSet
+
+# from .serializers import ProductSerializer, RatingSerializer
+
+# from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
 # @login_required(login_url='login')
@@ -97,6 +103,11 @@ def register(request):
 
                 user.groups.add(group)
 
+                Customer.objects.create(
+                     user = user,
+                     name= user.username,
+                )
+
                 messages.success(request, 'Account was created for ' + username )
                 return redirect('login')
         context = {'form': form}
@@ -105,5 +116,27 @@ def register(request):
 def logoutUser(request):
     logout(request)
     return redirect('login')
-    
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['customer'])
+def userPage(request):
+     
+     context = {}
+     return render(request, 'userpage.html', context)
+
+
+def ratingPage(request):
+     form = ratingForm()
+
+     if request.method == 'POST':
+          form = ratingForm(request.POST)
+          if form.is_valid:
+               form.save()
+
+     context = {'form': form}
+     return render(request, 'rating.html', context)
+# from rest framework
+
+
+
 
