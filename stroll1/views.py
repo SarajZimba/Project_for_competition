@@ -15,6 +15,8 @@ from .decorators import unauthenticated_user, allowed_users
 
 from django.contrib.auth.models import Group
 
+from django.db.models import Avg
+
 # from rest_framework.viewsets import ModelViewSet
 
 # from .serializers import ProductSerializer, RatingSerializer
@@ -125,18 +127,41 @@ def userPage(request):
      return render(request, 'userpage.html', context)
 
 
-def ratingPage(request):
+def ratingPage(request, dest_id):
+    #  user = request.user
+     destination = Destination.objects.get(id=dest_id)
+     reviews = Rating.objects.filter(destination=destination)
+     avg_reviews = reviews.aggregate(Avg('rating'))
+     reviews_count = reviews.count()
+     user = request.user
      form = ratingForm()
 
      if request.method == 'POST':
           form = ratingForm(request.POST)
+          
           if form.is_valid:
-               form.save()
+               rate = form.save(commit=False)
+               rate.user = user
+               rate.destination = destination
+               rate.save()
+               return redirect('home')
 
-     context = {'form': form}
+     context = {'form': form, 'destination': destination, 'avg_reviews' : avg_reviews,'reviews_count' : reviews_count}
      return render(request, 'rating.html', context)
 # from rest framework
 
+
+def destination_details(request, dest_id):
+     
+    if Destination.objects.filter(id=dest_id).exists():
+        destination = Destination.objects.get(id=dest_id)
+        reviews = Rating.objects.filter(destination=destination)
+        avg_reviews = reviews.aggregate(Avg('rating'))
+        reviews_count = reviews.count()
+
+    context = {'destination': destination, 'reviews_count': reviews_count, 'avg_reviews': avg_reviews, 'reviews':reviews}
+    return render(request, 'destination_details.html', context)
+     
 
 
 
