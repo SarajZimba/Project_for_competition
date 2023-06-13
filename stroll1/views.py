@@ -17,6 +17,8 @@ from django.contrib.auth.models import Group
 
 from django.db.models import Avg
 
+from django.core.paginator import Paginator,PageNotAnInteger, EmptyPage
+
 # from rest_framework.viewsets import ModelViewSet
 
 # from .serializers import ProductSerializer, RatingSerializer
@@ -46,13 +48,28 @@ def search(request):
     if len(query) > 80:
         blogdatas= Blogs.objects.none()
     else:
-        blogdatasname = Blogs.objects.filter(name__icontains=query)
-        blogdatastag = Blogs.objects.filter(tag__icontains=query)
+        # blogdatasname = Blogs.objects.filter(name__icontains=query)
+        # blogdatastag = Blogs.objects.filter(tag__icontains=query)
+        blogdatasdesc = Blogs.objects.filter(description__icontains=query)
 
-        blogdatas = blogdatasname.union(blogdatastag)
+        # blogdatas = blogdatasname.union(blogdatastag)
+        # blogdatas1 = blogdatas.union(blogdatasdesc)
+        paginator = Paginator(blogdatasdesc, 1)
+        page_number = request.GET.get('page')
+        try:
+             blogdatasdesc = paginator.page(page_number)
+        except PageNotAnInteger:
+             blogdatasdesc =paginator.page(1)
+        except EmptyPage:
+             blogdatasdesc = paginator.page(paginator.num_pages)
+             
+             
+             
+        # final = paginator.get_page(page_number)
+
     # if blogdatas.count(datas) == 0:
     #     messages.warning(request, "No Search results found. Please refine your keyword.")
-    context = {'blogdatas': blogdatas, 'query': query}
+    context = {'blogdatas': blogdatasdesc, 'query': query, 'page': page_number}
     return render(request, 'search.html', context)
 
 def custom(request):
