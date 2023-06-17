@@ -178,6 +178,20 @@ def destination_details(request, dest_id):
 
     context = {'destination': destination, 'reviews_count': reviews_count, 'avg_reviews': avg_reviews, 'reviews':reviews}
     return render(request, 'destination_details.html', context)
+
+
+def maps(request):
+     return render(request, 'maps.html')
+
+def mapsktm(request):
+     return render(request, 'mapsktm.html')
+def mapsbkt(request):
+     return render(request, 'mapsbkt.html')
+def mapslpr(request):
+     return render(request, 'mapslpr.html')
+
+def mapsboudha(request):
+     return render(request, 'mapsboudha.html')
      
 
 
