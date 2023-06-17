@@ -18,13 +18,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+   
 </head>
 <body>
    
 
     {%block content%}
     <div class="container2">
-        <div class="about">
+        <div class="about" id="about">
             <h4>Wheelie Nepal</h4>
             <h1>Explore your Travel <span>Destinations</span></h1>
             <h3>Enjoy the Best Wheel chair Accesible Destinations in Nepal with Wheelie Nepal Agency</h3>
@@ -67,7 +69,7 @@
     </div>
 
     <div class="container4" id="container4">
-        <div class="container">
+        <div class="container" id="container">
             <h4><span class="st-line"></span>&nbsp;&nbsp; Hot Tours</h4>
             <h2 class="head2">Popular WheelChair Packages</h2>
             <div class="grid-images">
@@ -446,6 +448,8 @@
 
         updatepriceannouncement();
     </script>
+
+    <script src="static/js/main.js"></script>
 
     {%endblock %}
 </body>

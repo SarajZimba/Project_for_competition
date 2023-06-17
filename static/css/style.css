@@ -941,3 +941,8 @@ label{
     font-size: 16px;
     transition: 0.8s;
 } 
+
+.on{
+    margin: 0 10px;
+    color: white !important;
+}
