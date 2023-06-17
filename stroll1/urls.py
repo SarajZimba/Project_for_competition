@@ -18,5 +18,11 @@ urlpatterns = [
     path("userpage", views.userPage, name="userpage"),
     path("<dest_id>/rating", views.ratingPage, name="rating"),             
     path("<dest_id>/destination_details", views.destination_details, name="destination_details"),             
+    path("maps/", views.maps, name="maps"),
+    path("ktm/", views.mapsktm, name="mapsktm"),
+    path("bkt/", views.mapsbkt, name="mapsbkt"),
+    path("lpr/", views.mapslpr, name="mapslpr"),
+    path("boudha/", views.mapsboudha, name="mapsboudha"),
+    
 
 ]

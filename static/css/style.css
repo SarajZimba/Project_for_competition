@@ -941,3 +941,7 @@ label{
     font-size: 16px;
     transition: 0.8s;
 } 
+
+#map {
+    height: 400px;
+}
