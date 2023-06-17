@@ -9,6 +9,7 @@ const change_icon = () =>{
         document.getElementsByTagName('body')[0].style.backgroundColor = "black"
         document.getElementsByTagName('body')[0].style.color = "white"
         document.getElementById('about').style.backgroundColor = "black"
+        document.getElementById('container4').style.backgroundColor = "black"
         document.getElementById('container').style.backgroundColor = "black"
     }
     else{
@@ -18,5 +19,6 @@ const change_icon = () =>{
         document.getElementsByTagName('body')[0].style.color = "black"
         document.getElementById('about').style.backgroundColor = "white"
         document.getElementById('container').style.backgroundColor = "white"
+        document.getElementById('container4').style.backgroundColor = "white"
     }
 }
