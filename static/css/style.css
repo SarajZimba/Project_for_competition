@@ -942,12 +942,7 @@ label{
     transition: 0.8s;
 } 
 
-<<<<<<< HEAD
 .on{
     margin: 0 10px;
     color: white !important;
-=======
-#map {
-    height: 400px;
->>>>>>> ee3deb3ce9df87707c5bacb3d8b42224e43c0daa
 }
