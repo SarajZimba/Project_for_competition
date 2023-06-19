@@ -194,5 +194,8 @@ def mapsboudha(request):
      return render(request, 'mapsboudha.html')
      
 
-
+def products(request):
+     products = product.objects.all()
+     context = {'products': products}
+     return render(request, 'products.html', context)
 

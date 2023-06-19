@@ -1,8 +1,8 @@
-let i=0;
+var i=0;
 
-let icon = document.getElementById('dark')
+var icon = document.getElementById('dark')
 
-const change_icon = () =>{
+var change_icon = () =>{
     if(i==0){
         i=1;
         icon.innerHTML="<i class='bi bi-moon on'></i>"

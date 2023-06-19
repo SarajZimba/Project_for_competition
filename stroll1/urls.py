@@ -23,6 +23,6 @@ urlpatterns = [
     path("bkt/", views.mapsbkt, name="mapsbkt"),
     path("lpr/", views.mapslpr, name="mapslpr"),
     path("boudha/", views.mapsboudha, name="mapsboudha"),
-    
+    path("products/", views.products, name="products"),
 
 ]
