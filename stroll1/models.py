@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 
 class Customer(models.Model):
-    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE, blank=True)
     name = models.CharField(max_length=100, null=True)
     email = models.CharField(max_length=100, null=True)
     phone = models.CharField(max_length=100, null=True)
@@ -98,39 +98,18 @@ class product(models.Model):
                 url = ''
             return url
     
-# class Order(models.Model):
-#         name = models.CharField(max_length = 200, null=True)
-#         quantity = models.CharField(max_length = 200, null=True)
-#         date_ordered = models.DateTimeField(auto_now_add=True, null=True)
-#         product = models.ManyToManyField(product)
-#         customer = models.ForeignKey(Customer, on_delete= models.CASCADE, blank=True, null=True) 
-#         complete = models.BooleanField(default=False, null=True, blank=True )
-#         transaction_id = models.CharField(max_length = 200, null=True)
-    
-        # @property
-        # def get_cart_total(self):
-        #     orderitems = self.orderitem_set.all()
-        #     total = sum(orderitem.get_total for orderitem in orderitems)
-        #     return total
-            
-        # @property
-        # def get_cart_items_number(self):
-        #     orderitems = self.orderitem_set.all()
-        #     total = sum(orderitem.quantity for orderitem in orderitems)
-        #     return total
 
 
 class Order(models.Model):
-    name = models.CharField(max_length = 200, null=True)
-    quantity = models.CharField(max_length = 200, null=True)
+    
     date_ordered = models.DateTimeField(auto_now_add=True, null=True)
-    product = models.ManyToManyField(product)
+   
     customer = models.ForeignKey(Customer, on_delete= models.SET_NULL, blank=True, null=True) 
     complete = models.BooleanField(default=False, null=True, blank=True )
     transaction_id = models.CharField(max_length = 200, null=True)
 
     def __str__(self):
-        return str(self.name)
+        return str(self.id)
     
     # @property
     # def shipping(self):
@@ -167,4 +146,17 @@ class OrderItem(models.Model):
         def get_total(self):
             total = self.quantity * self.product.price
             return total
+        
+class ShippingAddress(models.Model):
+    customer = models.ForeignKey(Customer, on_delete = models.SET_NULL, blank=True, null=True)
+    order = models.ForeignKey(Order, on_delete = models.SET_NULL, blank=True, null=True)
+    address = models.CharField(max_length = 200, null=True)
+    city = models.CharField(max_length = 200, null=True)
+    state = models.CharField(max_length = 200, null=True)
+    zipcode = models.CharField(max_length = 200, null=True)
+    phone = models.IntegerField(max_length = 200, null=True)
+    date_added = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.address
                                          

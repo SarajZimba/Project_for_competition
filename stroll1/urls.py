@@ -24,5 +24,9 @@ urlpatterns = [
     path("lpr/", views.mapslpr, name="mapslpr"),
     path("boudha/", views.mapsboudha, name="mapsboudha"),
     path("products/", views.products, name="products"),
+    path("update_item/", views.update_item, name="update_item"),
+    path("cart/", views.cart, name="cart"),
+    path("viewPage/", views.viewPage, name="viewPage"),
+    path("processorder", views.processOrder, name="processorder"),
 
 ]

@@ -1,8 +1,11 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
 <div class="container1">
     <div class="title">
-        <h2 aria-label="Wheelie logo ."><i class="fa-solid fa-wheelchair-move stroll-icon"></i>heelie</h2>
+        <h2 aria-label="Wheelie logo ."><a href="{% url 'home' %}"><i class="fa-solid fa-wheelchair-move stroll-icon"></i>heelie</a></h2>
         {% if request.user.is_authenticated%}
         <span>Hello, {{request.user}}</span>
         <span><a href="{% url 'logout'%}">Logout</a></span>
@@ -21,7 +24,7 @@
                 <li>LANDING PAGE</li>
             </ul>
         </li>
-        <li><a href="#">CONTACT</a></li>
+        <li><a href="{% url 'products' %}">PRODUCTS</a></li>
 
     </div>
         <div class="form">
@@ -32,6 +35,13 @@
         </div>
 
         <span onclick="change_icon()" id="dark" ><i class="bi bi-brightness-high on" id="light"></i></span>
+
+        <div class="from-inline my-2 my-lg-0">
+            <a href="{% url 'cart' %}">
+                <img id ="cart-icon" src="{% static 'images/cart.png'%}" alt="">
+            </a>
+            <span class="badge badge-info background-yellow">{{cartItems}}</span>
+        </div>
    
     
 </div>
