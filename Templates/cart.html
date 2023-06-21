@@ -16,7 +16,7 @@ Items in the cart page
             <tr>
                 <th><h4>Items:<strong>{{order.get_cart_items_number}}</strong></h4></th>
                 <th><h4>Total:<strong>{{order.get_cart_total|floatformat:2}}</strong></h4></th>
-                <th><a style = "float: right; margin: 5px" class = "btn btn-success" href="{% url 'viewPage' %}">view</a></th>
+                <th><a style = "float: right; margin: 5px" class = "btn btn-success" href="{% url 'viewPage' %}">Order</a></th>
             </tr>
         </table>
         <div class="box-element">
