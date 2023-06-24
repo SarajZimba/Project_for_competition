@@ -1,26 +1,37 @@
 {% extends 'base.html' %}
 {% load static %}
+<html>
 
+<head>
+	<script src="https://khalti.s3.ap-south-1.amazonaws.com/KPG/dist/2020.12.17.0.0.0/khalti-checkout.iffe.js"></script>
+</head>
 {% block content %}
-     <div class="row">
+
+<body>
+
+
+	<div class="row">
 		<div class="col-lg-6">
 			<div class="box-element" id="form-wrapper">
 				<form id="form">
 					<div id="user-info">
 						<div class="form-field">
-							<input required class="form-control" type="text" name="name" placeholder="Name.." autocomplete="off">
+							<input required class="form-control" type="text" name="name" placeholder="Name.."
+								autocomplete="off">
 						</div>
 						<div class="form-field">
-							<input required class="form-control" type="email" name="email" placeholder="Email.. " autocomplete="off">
+							<input required class="form-control" type="email" name="email" placeholder="Email.. "
+								autocomplete="off">
 						</div>
 					</div>
-					
+
 					<div id="shipping-info">
 						<hr>
 						<p>Shipping Information:</p>
 						<hr>
 						<div class="form-field">
-							<input class="form-control" type="text" name="address" placeholder="Address.." autocomplete="off">
+							<input class="form-control" type="text" name="address" placeholder="Address.."
+								autocomplete="off">
 						</div>
 						<div class="form-field">
 							<input class="form-control " type="text" name="city" placeholder="City..">
@@ -44,33 +55,99 @@
 			<br>
 			<div class="box-element hidden" id="payment-info">
 				<small>Paypal Options</small>
-				
-				<button id="make-payment" class="btn btn-info">Make Payment</button>
-			</div>
-			
+				<h3>Your total is {{order.get_cart_total|floatformat:2}}</h3>
+				<!-- Place this where you need payment button -->
+				<button id="payment-button" onclick="submitFormData()">Pay with Khalti</button>
+				<!-- Place this where you need payment button -->
+				<!-- Paste this code anywhere in you body tag -->
+				<script src="https://khalti.s3.ap-south-1.amazonaws.com/KPG/dist/2020.12.17.0.0.0/khalti-checkout.iffe.js"></script>
+				<script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+				<script>
 
-			
+					var config = {
+						// replace the publicKey with yours
+						"publicKey": "test_public_key_3e3bef2906e149e1aca57535b13b6ebd",
+						"productIdentity": "order_{{order.id}}",
+						"productName": "order_{{order.id}}",
+						"productUrl": "http://localhost:8000",
+						"paymentPreference": [
+							"KHALTI",
+							"EBANKING",
+							"MOBILE_BANKING",
+							"CONNECT_IPS",
+							"SCT",
+						],
+						"eventHandler": {
+							onSuccess(payload) {
+								// hit merchant api for initiating verfication
+								axios.get("/khalti-verify-cart",{
+									params: {
+										"token": payload.token,
+										"amount": payload.amount,
+										"order_id" : "{{order.id}}"
+									}
+								}).then(function(resp){
+									if(resp.data.success = "success"){
+										alert("Payment Completed Successfully")
+										window.location.href = "{% url 'home' %}"
+									}
+									else{
+										alert("Sorry!!Error Occured")
+										window.location.href = "{{request.build_absolute_uri}}"
+									}
+								})
+								console.log(payload);
+							},
+							onError(error) {
+								console.log(error);
+							},
+							onClose() {
+								console.log('widget is closing');
+							}
+						}
+					};
+
+					var checkout = new KhaltiCheckout(config);
+					var btn = document.getElementById("payment-button");
+					btn.onclick = function () {
+						// minimum transaction amount must be 10, i.e 1000 in paisa.
+						checkout.show({ amount: {{order.get_cart_total}}*100 });
+					}
+
+					<!-- Paste this code anywhere in you body tag -->
+				</script>
+
+			</div>
+
+
+
 		</div>
 
 		<div class="col-lg-6">
 			<div class="box-element">
-				<a  class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; Back to Cart</a>
+				<a class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; Back to Cart</a>
 				<hr>
 				<h3>Order Summary</h3>
 				<hr>
 				{% for item in items %}
 				<div class="cart-row">
 					<div style="flex:2"><img class="row-image" src="{{ item.product.imageURL}}"></div>
-					<div style="flex:2"><p>{{item.product.name}}</p></div>
-					<div style="flex:1"><p>{{item.product.price}}</p></div>
-					<div style="flex:1"><p>{{item.quantity}}</p></div>
+					<div style="flex:2">
+						<p>{{item.product.name}}</p>
+					</div>
+					<div style="flex:1">
+						<p>{{item.product.price}}</p>
+					</div>
+					<div style="flex:1">
+						<p>{{item.quantity}}</p>
+					</div>
 				</div>
 				{% endfor%}
 				<h5>Items:{{order.get_cart_items_number}}</h5>
 				<h5>Total:${{order.get_cart_total|floatformat:2}}</h5>
 			</div>
 		</div>
-		</div>
+	</div>
 	</div>
 
 	<script type="text/javascript">
@@ -78,73 +155,77 @@
 
 		var total = '{{order.get_cart_total}}'
 
-		
 
-		if (user != 'AnonymousUser'){
+
+		if (user != 'AnonymousUser') {
 			document.getElementById('user-info').innerHTML = ''
 		}
 
 		var form = document.getElementById('form')
 
-		form.addEventListener('submit', function(e){
+		form.addEventListener('submit', function (e) {
 			e.preventDefault()
 			console.log('Form Submitted')
 			document.getElementById('form-button').classList.add('hidden')
 			document.getElementById('payment-info').classList.remove('hidden')
 		})
 
-		document.getElementById('make-payment').addEventListener('click', function(e){
+		/* document.getElementById('submit').addEventListener('click', function (e) {
 			submitFormData()
-		})
-		
-		function submitFormData(){
+		}) */
+
+		function submitFormData() {
 			console.log('Payment button clicked')
 
-			var userFormData ={
-				'name' : null,
-				'email' : null,
-				'total' : total,
+			var userFormData = {
+				'name': null,
+				'email': null,
+				'total': total,
 
 			}
-			var shippingInfo ={
-				'address' : null,
-				'city' : null,
-				'state' : null,
-				'zipcode' : null,
-			
+			var shippingInfo = {
+				'address': null,
+				'city': null,
+				'state': null,
+				'zipcode': null,
+
 
 			}
 
-			
-				shippingInfo.address = form.address.value
-				shippingInfo.city = form.city.value
-				shippingInfo.state = form.state.value
-				shippingInfo.zipcode = form.zipcode.value
-			
-			if ( user == 'AnonymousUser'){
+
+			shippingInfo.address = form.address.value
+			shippingInfo.city = form.city.value
+			shippingInfo.state = form.state.value
+			shippingInfo.zipcode = form.zipcode.value
+
+			if (user == 'AnonymousUser') {
 				userFormData.name = form.name.value
 				userFormData.email = form.email.value
-				
+
 			}
 
 			var url = '/processorder'
 			fetch(url, {
-				method : 'POST',
-				headers : {
+				method: 'POST',
+				headers: {
 					'Content-Type': 'application/json',
 					'X-CSRFToken': csrftoken,
 				},
-				body : JSON.stringify({'form': userFormData, 'shipping':shippingInfo})
+				body: JSON.stringify({ 'form': userFormData, 'shipping': shippingInfo })
 			})
 
-			.then((response) => response.json())
-			.then((data)=> {
-				console.log('Success: ', data);
-				alert('Transaction completed');
-				window.location.href = "{% url 'products' %}"
-			})
-	
-			
+				.then((response) => response.json())
+				.then((data) => {
+					console.log('Success: ', data);
+					alert('Transaction completed');
+					window.location.href = "{% url 'products' %}"
+				})
+
+
 		}
 	</script>
+</body>
+
 {% endblock content %}
+
+</html>

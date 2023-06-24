@@ -41,7 +41,7 @@ Items in the cart page
 							<img data-product="{{item.product.id}}" data-action = "remove" class="chg-quantity update-cart" src="{% static  'images/arrowdown.png' %}">
 						</div>
 					</div>
-					<div style="flex:1"><p>${{item.get_total|floatformat:2}}</p></div>
+					<div style="flex:1"><p>Rs{{item.get_total|floatformat:2}}</p></div>
 				</div>
                 {% endfor %}
         </div>

@@ -99,14 +99,22 @@ class product(models.Model):
             return url
     
 
+METHOD = (
+    ("Cash on Delivery", "Cash on Delivery"),
+    ("Khalti", "Khalti"),
+    ("Esewa", "Esewa"),
+)
+
 
 class Order(models.Model):
     
     date_ordered = models.DateTimeField(auto_now_add=True, null=True)
-   
     customer = models.ForeignKey(Customer, on_delete= models.SET_NULL, blank=True, null=True) 
     complete = models.BooleanField(default=False, null=True, blank=True )
     transaction_id = models.CharField(max_length = 200, null=True)
+    payment_method = models.CharField(max_length=20, choices = METHOD, default="Cash on delivery")
+    payment_completed = models.BooleanField(default=False, null=True, blank=True)
+    
 
     def __str__(self):
         return str(self.id)
@@ -159,4 +167,28 @@ class ShippingAddress(models.Model):
 
     def __str__(self):
         return self.address
+
+ORDER_STATUS = (
+    ("Order Received", "Order Received"),
+    ("Order Processing", "Order Processing"),
+    ("On the way", "On the way"),
+    ("Order Completed", "Order Completed"),
+    ("Order Canceled", "Order Canceled"),
+)
+   
+class Destination_Order(models.Model):
+    ordered_by = models.CharField(max_length=200, null=True)
+    # shipping_address = models.CharField(max_length=200)
+    destination = models.CharField(max_length=30, null=True)
+    mobile = models.CharField(max_length=10, null=True)
+    email = models.EmailField(null=True, blank=True)
+    order_status = models.CharField(max_length=50, choices=ORDER_STATUS, default="Order Received")
+    # created_at = models.DateTimeField(auto_now_add=True)
+    payment_method = models.CharField(
+        max_length=20, choices=METHOD, default="Cash On Delivery")
+    payment_completed = models.BooleanField(
+        default=False, null=True, blank=True)
+
+    
+
                                          

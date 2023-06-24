@@ -2,7 +2,7 @@ from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.contrib.auth.models import User
-from .models import Rating
+from .models import Rating, Destination_Order, Order
 
 
 class CreateUserForm(UserCreationForm):
@@ -16,3 +16,16 @@ class ratingForm(ModelForm):
     class Meta:
         model = Rating
         fields = [ 'description', 'rating']
+
+
+class CheckoutForm(forms.ModelForm):
+    class Meta:
+        model = Destination_Order
+        fields = ['mobile','payment_method']
+
+
+class OrderForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ['payment_method', 'payment_completed']
+

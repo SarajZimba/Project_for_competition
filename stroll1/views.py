@@ -7,7 +7,8 @@ from django.contrib.auth.forms import UserCreationForm
 
 from django.contrib.auth import authenticate, login, logout
 
-from .forms import CreateUserForm,ratingForm
+from .forms import *
+from django.urls import reverse_lazy, reverse
 
 from django.contrib.auth.decorators import login_required
 
@@ -20,6 +21,8 @@ from django.db.models import Avg
 from django.core.paginator import Paginator,PageNotAnInteger, EmptyPage
 
 import json
+
+import requests
 
 import datetime
 # from rest_framework.viewsets import ModelViewSet
@@ -38,12 +41,7 @@ def index(request):
     context = {'dests': dests}
     return render(request, 'index.html', context)
 
-@login_required(login_url='login')
-def payment(request):
-    return render(request, 'payment.html')
-   
-    # dests = Destination.objects.all()
-    # context = {'dests': dests}
+
 
 def search(request):
     # blogdatas = Blogs.objects.all()
@@ -265,12 +263,57 @@ def viewPage(request):
         items=[]
         order = {'get_cart_total': 0, 'get_cart_items_number': 0}
         cartItems = order['get_cart_items_number']
+    form = OrderForm()
+        
+#     if request.method == "POST":
+       
+#             form = OrderForm(request.POST)
+            
+#             # rate = form.save(commit=False)
+#             # rate.save()
+#             orderForm = form.save(commit=False)
+            
+#             orderForm.save()
 
-    context = {'items': items, 'order': order, 'cartItems': cartItems}
+#             print(orderForm.id)
+            
+#             pm = form.cleaned_data.get("payment_method")
+#             print(pm)
+#             if pm == "Khalti":
+#                print("Payment method is khalti")
+#                return redirect(reverse("khalti-request-cart") + "?o_id=" + str(orderForm.id))
+#             #  elif pm == "Esewa":
+            #      return redirect(reverse("ecomapp:esewarequest") + "?o_id=" + str(order.id))
+        
+#     context={'form':form}
+#     form = OrderForm()
+        
+#     if request.method == "POST":
+       
+#             form = OrderForm(request.POST)
+#             orderForm = form.save(commit=False)
+         
+#             # rate = form.save(commit=False)
+#             # rate.save()
+            
+            
+#             pm = form.cleaned_data.get("payment_method")
+#             print(pm)
+#             if pm == "Khalti":
+#                  print("Payment method is khalti")
+#                  return redirect(reverse("khalti-request") + "?o_id=" )
+#             # elif pm == "Esewa":
+#             #     return redirect(reverse("ecomapp:esewarequest") + "?o_id=" + str(order.id))
+        
+        
+
+    context = {'items': items, 'order': order, 'cartItems': cartItems, "form":form}
     return render(request, "view.html", context)
 
 def processOrder(request):
      transaction_id = datetime.datetime.now().timestamp()
+
+     
 
      if request.user.is_authenticated:
           customer = request.user.customer
@@ -279,6 +322,8 @@ def processOrder(request):
           total = float(data['form']['total'])
           order.transaction_id = transaction_id
 
+          print(total)
+          print(order.get_cart_total)
           if total == order.get_cart_total:
                order.complete = True
                order.save()
@@ -295,3 +340,153 @@ def processOrder(request):
      else:
           print('user is not logged in..')
      return JsonResponse('Payment completed', safe=False)
+
+        
+@login_required(login_url='login')
+def payment(request, dest_id):
+        destination = Destination.objects.get(id=dest_id)
+        form = CheckoutForm()
+        
+        if request.method == "POST":
+       
+            form = CheckoutForm(request.POST)
+            
+            # rate = form.save(commit=False)
+            # rate.save()
+            order = form.save(commit=False)
+            order.destination = destination
+            order.ordered_by = request.user
+            order.save()
+
+            print(order.id)
+            
+            pm = form.cleaned_data.get("payment_method")
+            print(pm)
+            if pm == "Khalti":
+                 print("Payment method is khalti")
+                 return redirect(reverse("khalti-request") + "?o_id=" + str(order.id) + "&dest_id=" + str(dest_id))
+            #  elif pm == "Esewa":
+            #      return redirect(reverse("ecomapp:esewarequest") + "?o_id=" + str(order.id))
+        
+        context={'form':form}
+        return render(request, 'payment.html', context)
+   
+    # dests = Destination.objects.all()
+    # context = {'dests': dests}   
+        
+
+
+def KhaltiRequest(request):
+    o_id = request.GET.get("o_id")
+    dest_id = request.GET.get("dest_id")
+    destination = Destination.objects.get(id = dest_id)
+    order = Destination_Order.objects.get(id = o_id)
+    context = {"destination": destination, "order": order}
+    return render(request, "khaltirequest.html", context)
+
+
+def KhaltiVerify(request):
+     context = {}
+     token = request.GET.get("token")
+     amount = request.GET.get("amount")
+     order_id = request.GET.get("order_id")
+
+     url = "https://khalti.com/api/v2/payment/verify/"
+
+     payload = {
+     'token': token,
+     'amount': amount
+     }
+
+     headers = {
+     'Authorization': 'Key test_secret_key_17ade6c645e640b1a2f9bdab45ba808f'
+     }
+
+     order_obj = Destination_Order.objects.get(id=order_id)
+     response = requests.request("POST", url, headers=headers, data=payload)
+     resp_obj = response.json()
+     if resp_obj.get("idx"):
+          success = True
+          order_obj.payment_completed = True
+          
+          order_obj.save()
+
+     else:
+          success = False
+
+
+
+     print(token, amount, order_id)
+     data={
+          "success" : success
+     }
+     return JsonResponse(data)
+
+@login_required(login_url='login')
+def payment1(request):
+    
+
+    return render(request, 'view.html')
+
+#     return render(request, 'payment.html')
+
+def KhaltiRequestCart(request):
+     o_id = request.GET.get("o_id")
+     
+     customer = request.user.customer
+     order, created = Order.objects.get_or_create(customer=customer, complete=False)
+     print(order.get_cart_total)
+
+
+   
+
+     
+   
+    
+#     dest_id = request.GET.get("dest_id")
+#     destination = Destination.objects.get(id = dest_id)
+#     order = Destination_Order.objects.get(id = o_id)
+     context = {"order": order}
+     return render(request, "khaltirequestcart.html", context )
+
+
+def KhaltiVerifyCart(request):
+     context = {}
+     token = request.GET.get("token")
+     amount = request.GET.get("amount")
+     order_id = request.GET.get("order_id")
+
+     url = "https://khalti.com/api/v2/payment/verify/"
+
+     payload = {
+     'token': token,
+     'amount': amount
+     }
+
+     headers = {
+     'Authorization': 'Key test_secret_key_17ade6c645e640b1a2f9bdab45ba808f'
+     }
+
+     if request.user.is_authenticated:
+          customer = request.user.customer
+          order_obj, created = Order.objects.get_or_create(id=order_id)
+          response = requests.request("POST", url, headers=headers, data=payload)
+          resp_obj = response.json()
+          if resp_obj.get("idx"):
+               success = True
+               order_obj.payment_completed = True
+               order_obj.payment_method = "Khalti"
+               order_obj.complete = True
+               order_obj.save()
+               # orderItem, created = OrderItem.objects.get_or_create(order=order_obj, product=productt)
+
+          else:
+               success = False
+
+
+
+          print(token, amount, order_id, order_obj)
+          data={
+               "success" : success
+          }
+          return JsonResponse(data)

@@ -20,8 +20,7 @@
 </head>
 
 {%block content%}
-<body>
-   
+<>
     <div class="container7 container">
         <h4><span class="st-line"></span>&nbsp;&nbsp; 10-30% Off</h4>
         <h2 class="head2">Book Now</h2>
@@ -72,7 +71,7 @@
                     </select>
                 </div>
 
-    
+                
 
                 <div  id="form-button">
                     <label for="submit">Submit</label>
@@ -80,12 +79,15 @@
                 </div>
             </div>
         </form>
-            <div class="hidden" id="payment-info">
-                <label for="payment">Continue</label>
-                <!-- <button id="payment">Payment</button> -->
-            </div>
+           
         
     </div>
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" value="Submit">
+    </form>
 </body>
 
 <script type="text/javascript">

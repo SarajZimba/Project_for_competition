@@ -78,7 +78,7 @@
                     <img src="{{dest.imageUrl}}" alt="">
                     <div class="img-text">
                         <h3 class="product-name">{{dest.name}}</h3>
-                        <p>{{dest.description}}<a  class="product-price" href="{% url 'payment' %}"><span style="color:yellow">${{dest.price}}</span></a></p>
+                        <p>{{dest.description}}<a  class="product-price" href="{% url 'payment' dest.id %}"><span style="color:yellow">${{dest.price}}</span></a></p>
                        
                         <div class="rate" style="position:absolute;bottom:0;right:1;">
                             <button style="background: transparent; border-style:none"><a href="{% url 'rating' dest.id %}" style="color:aliceblue">Rate</a></button>

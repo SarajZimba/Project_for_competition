@@ -10,7 +10,8 @@ from . import views
 urlpatterns = [
     path("", views.index, name="home"),
     path("custom", views.custom, name="custom"),
-    path("payment", views.payment, name="payment"),
+    path("<dest_id>/payment", views.payment, name="payment"),
+    path("payment1", views.payment1, name="payment1"),
     path("search", views.search, name="search"),
     path("login/", views.loginPage, name="login"),
     path("logout/", views.logoutUser, name="logout"),
@@ -28,5 +29,14 @@ urlpatterns = [
     path("cart/", views.cart, name="cart"),
     path("viewPage/", views.viewPage, name="viewPage"),
     path("processorder", views.processOrder, name="processorder"),
+
+    # for destination order
+    path("khalti-request", views.KhaltiRequest, name="khalti-request"),
+    path("khalti-verify", views.KhaltiVerify, name="khalti-verify"),
+
+    # for cart order
+    path("khalti-request-cart", views.KhaltiRequestCart, name="khalti-request-cart"),
+    path("khalti-verify-cart", views.KhaltiVerifyCart, name="khalti-verify-cart"),
+
 
 ]
