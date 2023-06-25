@@ -365,8 +365,8 @@ def payment(request, dest_id):
             if pm == "Khalti":
                  print("Payment method is khalti")
                  return redirect(reverse("khalti-request") + "?o_id=" + str(order.id) + "&dest_id=" + str(dest_id))
-            #  elif pm == "Esewa":
-            #      return redirect(reverse("ecomapp:esewarequest") + "?o_id=" + str(order.id))
+            elif pm == "Esewa":
+                 return redirect(reverse("esewa-request") + "?o_id=" + str(order.id) + "&dest_id=" + str(dest_id))
         
         context={'form':form}
         return render(request, 'payment.html', context)
@@ -421,6 +421,16 @@ def KhaltiVerify(request):
           "success" : success
      }
      return JsonResponse(data)
+
+
+def EsewaRequest(request):
+     o_id = request.GET.get("o_id")
+     dest_id = request.GET.get("dest_id")
+     destination = Destination.objects.get(id=dest_id)
+
+     context = {'destination': destination}
+     return render(request, "EsewaRequest.html", context )
+
 
 @login_required(login_url='login')
 def payment1(request):
@@ -490,3 +500,20 @@ def KhaltiVerifyCart(request):
                "success" : success
           }
           return JsonResponse(data)
+     
+
+
+def UserProfile(request):
+     customer = request.user.customer
+     userOrder = Order.objects.filter(customer=customer)
+     for orders in userOrder:
+          print(orders , orders.orderitem_set.all())
+
+     context = {'userOrder': userOrder}
+     return render(request, "userpage.html", context)
+
+def showOrderitems(request, order_id):
+     order = Order.objects.get(id=order_id)
+     orderitems = order.orderitem_set.all()
+     context = {'orderitems': orderitems}
+     return render(request, 'orderitems.html', context)

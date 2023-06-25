@@ -10,6 +10,7 @@
         <span>Hello, {{request.user}}</span>
         <span><a href="{% url 'logout'%}">Logout</a></span>
         {% endif %}
+        <div><a href="{%url 'user-profile'%}" style="list-style:none"><li style="color: white;"> See Your Orders</li></a></div>
     </div>
     <div aria-label="navigation bar with 4 links home about destinations blog contact" role="nav" class="menu">
 

@@ -1,1 +1,9 @@
-<h1>Thank you for your review</h1>
+{% load static %}
+<h1>Your orders</h1>
+
+{% for orders in userOrder %}
+<p><a href="{% url 'showOrderitems' orders.id %}">Order: {{orders}}</a></p>
+
+<!-- <p>Order Items:</p> -->
+
+{% endfor %}

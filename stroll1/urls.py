@@ -30,9 +30,18 @@ urlpatterns = [
     path("viewPage/", views.viewPage, name="viewPage"),
     path("processorder", views.processOrder, name="processorder"),
 
-    # for destination order
+    # user profile
+    path("user-profile", views.UserProfile, name="user-profile"),
+    path("<order_id>/showOrderitems", views.showOrderitems, name="showOrderitems"),
+
+
+    # for destination order_khalti
     path("khalti-request", views.KhaltiRequest, name="khalti-request"),
     path("khalti-verify", views.KhaltiVerify, name="khalti-verify"),
+
+    # for destination order_khalti
+    path("esewa-request", views.EsewaRequest, name="esewa-request"),
+    # path("esewa-verify", views.EsewaVerify, name="esewa-verify"),
 
     # for cart order
     path("khalti-request-cart", views.KhaltiRequestCart, name="khalti-request-cart"),
