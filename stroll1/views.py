@@ -515,5 +515,5 @@ def UserProfile(request):
 def showOrderitems(request, order_id):
      order = Order.objects.get(id=order_id)
      orderitems = order.orderitem_set.all()
-     context = {'orderitems': orderitems}
+     context = {'orderitems': orderitems, 'order':order}
      return render(request, 'orderitems.html', context)
