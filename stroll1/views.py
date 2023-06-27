@@ -519,10 +519,16 @@ def KhaltiVerifyCart(request):
 def UserProfile(request):
      customer = request.user.customer
      userOrder = Order.objects.filter(customer=customer)
+     userdestOrder = Destination_Order.objects.filter(ordered_by=request.user)
      for orders in userOrder:
           print(orders , orders.orderitem_set.all())
+          
+     for order in userdestOrder:
+          print(order)
 
-     context = {'userOrder': userOrder}
+
+     context = {'userOrder': userOrder, 'userdestOrder': userdestOrder}
+
      return render(request, "userpage.html", context)
 
 def showOrderitems(request, order_id):

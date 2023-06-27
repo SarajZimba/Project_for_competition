@@ -177,6 +177,7 @@ ORDER_STATUS = (
 )
    
 class Destination_Order(models.Model):
+    date_ordered = models.DateTimeField(auto_now_add=True, null=True)
     ordered_by = models.CharField(max_length=200, null=True)
     # shipping_address = models.CharField(max_length=200)
     destination = models.CharField(max_length=30, null=True)
