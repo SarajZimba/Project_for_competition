@@ -256,6 +256,9 @@ button:hover{
     height: 100%;
     width: 100%;
     border-radius: 5px ;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 
@@ -1042,4 +1045,30 @@ label{
 
 .hidden{
 	display: none!important;
+}
+
+.add p{
+    background-color: rgba(0, 0, 0, 0.6);
+    color: yellow;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    opacity: 0;
+    transition: 0.25s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.add p:hover {
+    opacity: 1  ;
+}
+
+.add .title span{
+    
+    transform: translateY(25px);
+    transition: 0.25s;
+}
+.add p:hover > span{
+    transform: translateY(0);
 }

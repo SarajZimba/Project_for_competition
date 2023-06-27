@@ -37,19 +37,23 @@
             <h2 class="head2">Popular WheelChairs</h2>
             <div class="grid-images">
                 {% for product in products %}
-                <div class="g-img products">
+                <div data-product= "{{product.id}}" data-action="add" class="g-img products update-cart">
                     <img src="{{product.imageURL}}" alt="">
                     <div class="img-text">
                         <h3 class="product-name">{{product.name}}</h3>
-                        <p><a  class="product-price" href="{% url 'payment1' %}"><span style="color:yellow">${{product.price}}</span></a></p>
+                        <p><a  class="product-price" href="#"><span style="color:yellow">${{product.price}}</span></a></p>
 
-                        <button data-product= "{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart ">Add to cart</button>
+                        <!-- <button data-product= "{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart ">Add to cart</button> -->
                         <!-- <a  class="btn btn-outline-success" href="#">view</a> -->
                     
                         <!-- <div class="rate" style="position:absolute;bottom:0;right:1;">
                             <button style="background: transparent; border-style:none"><a href="{% url 'rating' product.id %}" style="color:aliceblue">Rate</a></button>
                             <button style="background: transparent; border-style:none"><a href="{% url 'destination_details' product.id %}" style="color:aliceblue">View</a></button>
                         </div> -->
+                    </div>
+
+                    <div class="add">
+                        <p class="title"><span>Add to Cart</span></p>
                     </div>
                 
 
