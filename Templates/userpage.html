@@ -29,6 +29,7 @@
     <thead>
       <tr>
         <th scope="col">Orders</th>
+        <th scope="col">Total</th>
         <th scope="col">Date_created</th>
     
       </tr>
@@ -37,6 +38,7 @@
       <tr>
         {% for order in userdestOrder%}
         <td><a href="#">{{order.destination}}</a></td>
+        <td><a href="#">Rs{{order.price}}</a></td>
         <td><a>{{order.date_ordered}}</a></td>
       </tr>
       {% endfor %}

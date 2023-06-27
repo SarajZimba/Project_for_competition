@@ -368,6 +368,7 @@ def payment(request, dest_id):
             # rate.save()
             order = form.save(commit=False)
             order.destination = destination
+            order.price = destination.price
             order.ordered_by = request.user
             order.save()
 

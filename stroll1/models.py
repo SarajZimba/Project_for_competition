@@ -189,6 +189,7 @@ class Destination_Order(models.Model):
         max_length=20, choices=METHOD, default="Cash On Delivery")
     payment_completed = models.BooleanField(
         default=False, null=True, blank=True)
+    price = models.FloatField(null=True)
 
     
 
