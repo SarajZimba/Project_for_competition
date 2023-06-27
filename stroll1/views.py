@@ -38,7 +38,13 @@ import datetime
 def index(request):
    
     dests = Destination.objects.all()
-    context = {'dests': dests}
+    
+    user = request.user
+    count = 0
+    if Rating.objects.filter(user=user).exists():
+         count = 1
+
+    context = {'dests': dests, 'count':count}    
     return render(request, 'index.html', context)
 
 
@@ -177,7 +183,14 @@ def destination_details(request, dest_id):
         avg_reviews = reviews.aggregate(Avg('rating'))
         reviews_count = reviews.count()
 
-    context = {'destination': destination, 'reviews_count': reviews_count, 'avg_reviews': avg_reviews, 'reviews':reviews}
+    user = request.user
+    print(user, destination)
+    count=0
+    if Rating.objects.filter(user=user, destination=destination).exists():
+         count = 1
+    
+
+    context = {'destination': destination, 'reviews_count': reviews_count, 'avg_reviews': avg_reviews, 'reviews':reviews, 'count': count}
     return render(request, 'destination_details.html', context)
 
 
@@ -517,3 +530,25 @@ def showOrderitems(request, order_id):
      orderitems = order.orderitem_set.all()
      context = {'orderitems': orderitems, 'order':order}
      return render(request, 'orderitems.html', context)
+
+
+def update_review(request, review_id):
+     review =  Rating.objects.get(id = review_id)
+     form = ratingForm(instance=review)
+
+     if request.method == 'POST':
+          form = ratingForm(request.POST, instance=review)
+          if form.is_valid():
+               form.save()
+               return redirect('home')
+
+     context = {'form': form}
+     return render(request, 'rating.html', context)
+
+def delete_review(request, review_id):
+     review = Rating.objects.get(id=review_id)
+     if request.method == "POST":
+          review.delete()
+          return redirect('home')
+     context = {'review': review}
+     return render(request, 'delete_review.html', context)

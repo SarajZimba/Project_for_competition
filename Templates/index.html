@@ -81,7 +81,9 @@
                         <p>{{dest.description}}<a  class="product-price" href="{% url 'payment' dest.id %}"><span style="color:yellow">${{dest.price}}</span></a></p>
                        
                         <div class="rate" style="position:absolute;bottom:0;right:1;">
-                            <button style="background: transparent; border-style:none"><a href="{% url 'rating' dest.id %}" style="color:aliceblue">Rate</a></button>
+                            {%if count == 0%}
+                            <!-- <button style="background: transparent; border-style:none"><a href="{% url 'rating' dest.id %}" style="color:aliceblue">Rate</a></button> -->
+                            {%endif%}
                             <button style="background: transparent; border-style:none"><a href="{% url 'destination_details' dest.id %}" style="color:aliceblue">View</a></button>
                         </div>
                     </div>

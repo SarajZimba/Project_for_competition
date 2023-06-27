@@ -33,6 +33,10 @@ urlpatterns = [
     path("viewPage/", views.viewPage, name="viewPage"),
     path("processorder", views.processOrder, name="processorder"),
 
+    # review-update
+    path('<review_id>/update_review', views.update_review, name="update_review"),
+    path('<review_id>/delete_review', views.delete_review, name="delete_review"),
+
     # user profile
     path("user-profile", views.UserProfile, name="user-profile"),
     path("<order_id>/showOrderitems", views.showOrderitems, name="showOrderitems"),

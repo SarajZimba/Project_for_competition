@@ -49,8 +49,9 @@
             Average: {{avg_reviews.rating__avg}}/5 stars
         </div>
     
+        {% if count == 0 %}
         <button><a href="{%url 'rating' destination.id%}">Rate this place</a></button>
-
+        {% endif %}
 
         <h2>Reviews</h2>
         {% for review in reviews%}
@@ -67,6 +68,10 @@
         <div class="rate">
             {{review.rating}}/5 stars
         </div>
+        {%if review.user == request.user %}
+            <button><a href="{% url 'update_review' review.id %}">Update</a></button>
+            <button><a href="{% url 'delete_review' review.id %}">Delete</a></button>
+        {% endif %}
     </div>
         
 
