@@ -41,6 +41,8 @@ urlpatterns = [
     path("user-profile", views.UserProfile, name="user-profile"),
     path("<order_id>/showOrderitems", views.showOrderitems, name="showOrderitems"),
 
+    path("cash on delivery-request", views.cashondelivery, name="cashondelivery"),
+    path("submit_order", views.submit_order, name="submit_order"),
 
     # for destination order_khalti
     path("khalti-request", views.KhaltiRequest, name="khalti-request"),

@@ -376,6 +376,8 @@ def payment(request, dest_id):
             
             pm = form.cleaned_data.get("payment_method")
             print(pm)
+            if pm == "Cash on Delivery":
+                 return redirect(reverse("cashondelivery")+ "?o_id=" + str(order.id) + "&dest_id=" + str(dest_id))
             if pm == "Khalti":
                  print("Payment method is khalti")
                  return redirect(reverse("khalti-request") + "?o_id=" + str(order.id) + "&dest_id=" + str(dest_id))
@@ -397,6 +399,14 @@ def KhaltiRequest(request):
     order = Destination_Order.objects.get(id = o_id)
     context = {"destination": destination, "order": order}
     return render(request, "khaltirequest.html", context)
+
+def cashondelivery(request):
+    o_id = request.GET.get("o_id")
+    dest_id = request.GET.get("dest_id")
+    destination = Destination.objects.get(id = dest_id)
+    order = Destination_Order.objects.get(id = o_id)
+    context = {"destination": destination, "order": order}
+    return render(request, "cashondelivery.html", context)
 
 
 def KhaltiVerify(request):
@@ -472,6 +482,15 @@ def KhaltiRequestCart(request):
 #     order = Destination_Order.objects.get(id = o_id)
      context = {"order": order}
      return render(request, "khaltirequestcart.html", context )
+
+def submit_order(request):
+     order_id = request.GET.get("order_id")
+     if request.user.is_authenticated:
+          customer = request.user.customer
+          order_obj, created = Order.objects.get_or_create(id=order_id)  
+          order_obj.complete = True
+          order_obj.save()
+          return redirect("home")
 
 
 def KhaltiVerifyCart(request):
